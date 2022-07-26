@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Profiles</title>
-  <link rel="stylesheet" href="/styles/base.css">
-  <link rel="stylesheet" href="/styles/profiles.css">
-</head>
-<body>
-  <main>
-    <section id="user-controls">
-      <a class="btn" href="/new-user">Add a New User</a>
-    </section>
-    <section id="user-profiles">
-      <ul>
-        <li class="user-item">
-          <article>
-            <img src="" alt="The image of the user.">
-            <h2>User name</h2>
-          </article>
-        </li>
-      </ul>
-    </section>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Profiles</title>
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/profiles.css" />
+  </head>
+  <body>
+    <main>
+      <section id="user-controls">
+        <a class="btn" href="/new-user">Add a New User</a>
+      </section>
+      <section id="user-profiles">
+        <ul>
+          <% for (const user of users) { %>
+          <li class="user-item">
+            <article>
+              <img src="<%= user.imagePath %> " alt="The image of the user." />
+              <!-- If we wanna show an image of a html page, we need to define the path to that -->
+              <!-- image on the src="" attribute -->
+              <!-- user.imagePath will give us the image path that is stored on the documents -->
+              <!-- of the "users" collection. -->
+              <!-- But the image file is still not served to users -->
+              <!-- The reason for that is because by default, users can't access server side files -->
+              <!-- So we need to make those files accessible to the users by creating a middleware -->
+              <!-- on app.js like this => app.use("/images", express.static("images")); -->
+              <h2><%= user.name %></h2>
+              <!-- This will show the name data from the "users" collection. -->
+            </article>
+          </li>
+          <% } %>
+        </ul>
+      </section>
+    </main>
+  </body>
 </html>

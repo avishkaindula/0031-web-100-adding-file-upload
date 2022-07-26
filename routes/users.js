@@ -60,8 +60,12 @@ const upload = multer({ storage: storageConfig });
 
 const router = express.Router();
 
-router.get("/", function (req, res) {
-  res.render("profiles");
+router.get("/", async function (req, res) {
+  const users = await db.getDb().collection("users").find().toArray();
+  // This will give us an array of all the data on the documents on "users" collection
+  res.render("profiles", { users: users });
+  // users: users will pass the user data on "users" collection into profiles.ejs
+  // That data is used to render the user data on the profiles page.
 });
 
 router.get("/new-user", function (req, res) {
