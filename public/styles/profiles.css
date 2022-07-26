@@ -41,3 +41,16 @@
   margin: 0.5rem 0;
 }
 
+#image-preview {
+  width: 5rem;
+  height: 2.5rem;
+  object-fit: cover;
+  /* This will make sure that there won't be any distortion on the image */
+  /* since object fit will ensure that the aspect ratio is not destroyed */
+  /* and instead the image is simply clipped to fit into the boundaries. */
+
+  display: none;
+  /* This will make sure that by default the image-preview element is not shown */
+  /* This element is only shown when triggered through the following code on */
+  /* file-preview.js file => imagePreviewElement.style.display = "block"; */
+}
