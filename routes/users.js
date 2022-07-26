@@ -2,6 +2,8 @@ const express = require("express");
 
 const multer = require("multer");
 
+const db = require("../data/database");
+
 const storageConfig = multer.diskStorage({
   // This is a method we can execute which create a new storage object.
   // Now we need to pass an object to diskStorage and in this object, we can specify
@@ -15,7 +17,7 @@ const storageConfig = multer.diskStorage({
     // The first value is a potential error we might have if something went wrong with generating the destination.
     // There won't be any errors here as we hard code the destination. So we should set the first value as "null"
     // We need to provide the "destination path" as the second value.
-    // In this case the images will be stored in the "images" folder. 
+    // In this case the images will be stored in the "images" folder.
     // Therefor the path is just "images" relative to users.js
   },
   filename: function (req, file, cb) {
@@ -66,7 +68,7 @@ router.get("/new-user", function (req, res) {
   res.render("new-user");
 });
 
-router.post("/profiles", upload.single("image"), function (req, res) {
+router.post("/profiles", upload.single("image"), async function (req, res) {
   const uploadedImageFile = req.file;
   // This will hold the image JPG that was submitted
   // req.file is an object that gives us extra file information like the path where the files are stored.
@@ -74,7 +76,7 @@ router.post("/profiles", upload.single("image"), function (req, res) {
   const userData = req.body;
   // This will hold the username that was submitted through the form
 
-  console.log(uploadedImageFile);
+  // console.log(uploadedImageFile);
   // result==========================================================
   // {
   //   fieldname: 'image',
@@ -87,9 +89,24 @@ router.post("/profiles", upload.single("image"), function (req, res) {
   //   size: 51367
   // }
 
-  console.log(userData);
+  // console.log(userData);
   // result===========================================================
   // { username: 'Avishka Indula' }
+
+  await db.getDb().collection("users").insertOne({
+    name: userData.username,
+    imagePath: uploadedImageFile.path,
+  });
+  // This will create a collection named "users" on file-demo database and then create a
+  // document with the user details and the details of the uploaded image on that collection.
+  // result===========================================================
+  // {
+  //   "_id": {
+  //     "$oid": "62df5eae2e2b30b648c48d59"
+  //   },
+  //   "name": "Shameen",
+  //   "imagePath": "images\\1658805934543-thomas shelby quotes 10.jpg"
+  // }
 
   res.redirect("/");
 });
